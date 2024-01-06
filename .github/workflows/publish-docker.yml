@@ -13,8 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker
-        uses: docker/setup-action@v2
+    #   - name: Set up Docker
+    #     uses: docker/setup-action@v2
 
       - name: Extract tag from commit message
         run: |
