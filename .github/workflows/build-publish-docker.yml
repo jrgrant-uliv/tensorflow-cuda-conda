@@ -9,18 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: philips-software/docker-ci-scripts@v4.5.0
+      - uses: actions/checkout@v2 # Checking out the repo
+      - name: Build and Publish head Docker image
+        uses: VaultVulp/gp-docker-action@1.1.12
         with:
-          dockerfile: "Dockerfile"
-          #image name from repository
-          image-name: "tensorflow-cuda-conda"
-          tags: "latest base"
-        env:
-          REGISTRY_USERNAME: ${{ github.actor }}
-          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REGISTRY_URL: ghcr.io/jrgrant-uliv
-          # GITHUB_ORGANIZATION: jrgrant-uliv
-
-
-
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
+          image-name: tensorflow-cuda-conda # Provide Docker image name
+          pull-image: true # Raise the flag to try to pull image
