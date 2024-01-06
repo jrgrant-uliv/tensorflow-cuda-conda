@@ -11,11 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2 # Checking out the repo
 
-      - name: Build and Publish head Docker image
-        uses: VaultVulp/gp-docker-action@1.6.0
+      - name: Publish Image
+        uses: matootie/github-docker@v3.0.0
         with:
-            # github-username: ${{ github.actor }} # Provide GitHub username
-            github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-            image-name: ${{ github.repository }} # Provide Docker image name
-            image-tag: latest base
-            dockerfile: Dockerfile
+          accessToken: ${{ github.token }}
+          tag: latest
