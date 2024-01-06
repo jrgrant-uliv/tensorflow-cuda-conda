@@ -25,4 +25,3 @@ RUN pip install tensorflow[and-cuda] tensorrt tensorflow-addons
 RUN touch /.dockerenv
 
 CMD ["jupyter", "notebook", "--ip='*'", "--port=8888", "--no-browser", "--allow-root"]
-
