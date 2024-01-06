@@ -20,7 +20,7 @@ jobs:
           REGISTRY_USERNAME: ${{ github.actor }}
           REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REGISTRY_URL: ghcr.io/jrgrant-uliv
-          GITHUB_ORGANIZATION: jrgrant-uliv
+          # GITHUB_ORGANIZATION: jrgrant-uliv
 
 
 
