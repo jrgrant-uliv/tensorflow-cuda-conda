@@ -1,42 +1,27 @@
-#trigger action on merge into master
+#trigger on push to master
 on:
-    push:
-        branches:
-            - master
+  push:
+    branches:
+      - master
 
-#check if there is a #TAG in the commit message, use the value after the = for tagging a new release
+#build docker image and push to github packages
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Get commit message
-              id: commit_message
-              run: echo "::set-output name=message::$(git log --format=%B -n 1 ${{ github.sha }})"
-            - name: Get tag
-              id: get_tag
-              run: echo "::set-output name=tag::$(echo ${{ steps.commit_message.outputs.message }} | grep -oP '(?<=#TAG=)[^ ]+')"
-            - name: Create Release
-              id: create_release
-              uses: actions/create-release@v1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  tag_name: ${{ steps.get_tag.outputs.tag }}
-                  release_name: Release ${{ steps.get_tag.outputs.tag }}
-                  draft: false
-                  prerelease: false
-        #build and push docker image to gihub packages under this release
-            - name: Build and push
-              uses: docker/build-push-action@v2
-              with:
-                  context: .
-                  file: ./Dockerfile
-                  push: true
-                  tags: ${{ github.repository }}:latest
-                  tags: ${{ github.repository }}:${{ steps.get_tag.outputs.tag }}
-                  tags: docker.pkg.github.com/${{ github.repository }}:latest
-                  tags: docker.pkg.github.com/${{ github.repository }}:${{ steps.get_tag.outputs.tag }}
-                  registry: docker.pkg.github.com
-                  username: ${{ github.actor }}
-                  password: ${{ secrets.GITHUB_TOKEN }}
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: ${{ github.repository }}
+          tag_with_ref: true
+
