@@ -2,7 +2,7 @@
 on:
   push:
     branches:
-      - master
+      - main
 
 #build docker image and push to github packages
 jobs:
