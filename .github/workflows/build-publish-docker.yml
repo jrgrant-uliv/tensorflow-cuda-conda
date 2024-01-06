@@ -1,6 +1,6 @@
 #trigger action on merge into master
 on:
-    merge:
+    push:
         branches:
             - master
 
