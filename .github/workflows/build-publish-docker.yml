@@ -4,18 +4,23 @@ on:
     branches:
       - main
 
-#build docker image and push to github packages
+#build docker image and push to docker hub
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{ github.repository }}:latest
-      - name: Log in to GitHub Packages
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-      - name: Push the Docker image
-        run: docker push docker.pkg.github.com/${{ github.repository }}:latest
+      - uses: philips-software/docker-ci-scripts@v4.5.0
+        with:
+          dockerfile: "Dockerfile"
+          #image name from repository
+          image-name: "tensorflow-cuda-conda"
+          tags: "latest base"
+        env:
+          REGISTRY_USERNAME: ${{ github.actor }}
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY_URL: ghcr.io/jrgrant-uliv
+          GITHUB_ORGANIZATION: jrgrant-uliv
 
 
 
