@@ -20,7 +20,7 @@ RUN conda update -n base -c defaults conda && \
 #install cuda capability for tensorflow
 RUN conda install -y cudatoolkit tensorflow && \
     conda clean -ya
-RUN pip install -y tensorflow[and-cuda] tensorrt tensorflow-addons 
+RUN pip install tensorflow[and-cuda] tensorrt tensorflow-addons 
 
 RUN touch /.dockerenv
 
