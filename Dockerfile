@@ -18,7 +18,7 @@ RUN conda update -n base -c defaults conda && \
     conda clean -ya
 
 #install cuda capability for tensorflow
-RUN conda install -y cudatoolkit=11.1.1 tensorflow tensorflow-gpu && \
+RUN conda install -y cudatoolkit tensorflow tensorflow-gpu && \
     conda clean -ya
 RUN pip install -y tensorflow[and-cuda] tensorrt tensorflow-addons tensorflow-gpu
 
