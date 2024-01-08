@@ -5,7 +5,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 #install miniconda
 RUN apt-get update --fix-missing && \
-    apt-get install -y wget bzip2 && \
+    apt-get install -y wget bzip2 build-essential && \
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
     bash /tmp/miniconda.sh -b -p /opt/miniconda && \
     rm /tmp/miniconda.sh
@@ -18,9 +18,9 @@ RUN conda update -n base -c defaults conda && \
     conda clean -ya
 
 #install cuda capability for tensorflow
-RUN conda install -y cudatoolkit tensorflow && \
+RUN conda install -y python=3.11 cudatoolkit tensorflow cudnn && \
     conda clean -ya
-RUN pip install tensorflow[and-cuda] tensorrt tensorflow-addons 
+RUN pip install tensorflow[and-cuda] tensorrt tensorflow-addons
 
 RUN touch /.dockerenv
 
